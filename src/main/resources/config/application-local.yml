@@ -1,0 +1,12 @@
+---
+stub:
+  enable:
+    down: false
+    timeout: false
+
+api:
+  stub-data:
+    base-url: http://localhost:8080/stub/data/json
+    connect-timeout: 1000ms
+    read-timeout: 1000ms
+    max-in-memory-size: 16777216
