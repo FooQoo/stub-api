@@ -5,10 +5,12 @@ import com.fooqoo56.dev.stub.exception.InvalidJsonFormatException;
 import java.io.IOException;
 import java.io.Serializable;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@EqualsAndHashCode
 public class StubBody implements Serializable {
 
     private static final long serialVersionUID = 7281153937276565042L;

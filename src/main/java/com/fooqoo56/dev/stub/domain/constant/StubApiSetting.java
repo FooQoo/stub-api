@@ -25,10 +25,10 @@ public enum StubApiSetting {
     private final MediaType errorMediaType;
 
     /**
-     * sleepDurationを取得する
+     * StubApiSettingを取得する
      *
      * @param apiKey apiKey
-     * @return sleepDuration
+     * @return StubApiSetting
      * @throws IllegalArgumentException 存在しないapiKeyの場合の例外
      */
     @NonNull
@@ -37,5 +37,18 @@ public enum StubApiSetting {
         return Arrays.stream(StubApiSetting.values())
                 .filter(stubApiSetting -> stubApiSetting.getApiKey().equals(apiKey))
                 .findFirst().orElseThrow(IllegalArgumentException::new);
+    }
+
+    /**
+     * StubApiSettingが存在するかどうかを判定する
+     *
+     * @param apiKey apiKey
+     * @return apiKeyが存在する場合は、trueを返す
+     */
+    @NonNull
+    public static boolean isStubApiSetting(final String apiKey)
+            throws IllegalArgumentException {
+        return Arrays.stream(StubApiSetting.values())
+                .anyMatch(stubApiSetting -> stubApiSetting.getApiKey().equals(apiKey));
     }
 }

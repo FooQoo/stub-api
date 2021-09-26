@@ -5,14 +5,14 @@ import com.fooqoo56.dev.stub.domain.type.StatusCode;
 import java.io.Serializable;
 import lombok.AccessLevel;
 import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 import org.springframework.lang.NonNull;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder(access = AccessLevel.PRIVATE)
-@ToString
+@EqualsAndHashCode
 @Getter
 public class StubParam implements Serializable {
 

@@ -3,11 +3,13 @@ package com.fooqoo56.dev.stub.domain.type;
 import com.fooqoo56.dev.stub.exception.BadRequestException;
 import java.io.Serializable;
 import lombok.AccessLevel;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
+@EqualsAndHashCode
 @Getter
 public class StatusCode implements Serializable {
 

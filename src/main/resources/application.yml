@@ -3,5 +3,3 @@ spring:
     throw-exception-if-no-handler-found: true
   webflux:
     static-path-pattern: /stub/data/**
-
-

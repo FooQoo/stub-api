@@ -45,9 +45,9 @@ dependencies {
             // test library for webflux
             'io.projectreactor:reactor-test',
             // spock
-            'org.spockframework:spock-core:1.3-groovy-2.5',
+            'org.spockframework:spock-core:2.0-groovy-3.0',
             // spock for spring boot
-            'org.spockframework:spock-spring:1.3-groovy-2.5',
+            'org.spockframework:spock-spring:2.0-groovy-3.0',
             // library for spock
             'cglib:cglib-nodep:3.3.0',
             // mock for webflux
@@ -58,6 +58,7 @@ dependencies {
 }
 
 test {
+    useJUnitPlatform()
     testLogging {
         // テスト時の標準出力と標準エラー出力を表示する
         showStandardStreams true
