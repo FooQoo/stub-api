@@ -31,7 +31,6 @@ public class StubBody implements Serializable {
         } else {
             throw new InvalidJsonFormatException("文字列はJSON形式でありません");
         }
-
     }
 
     /**
