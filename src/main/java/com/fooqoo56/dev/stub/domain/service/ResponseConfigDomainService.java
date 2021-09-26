@@ -23,15 +23,35 @@ public class ResponseConfigDomainService {
     public void setResponse(final StubParam stubParam, final ServerWebExchange exchange) {
         final var stubApiSetting = StubApiSetting.getStubApiSetting(stubParam.getApi().toString());
 
+        exchange.getResponse().setRawStatusCode(getRawStatusCode(stubParam));
+        exchange.getResponse()
+                .getHeaders()
+                .add(HttpHeaders.CONTENT_TYPE, getMediaTypeString(stubApiSetting));
+    }
+
+    /**
+     * MediaTypeを文字列で取得する
+     *
+     * @param stubApiSetting スタブAPIの設定
+     * @return MediaTypeの文字列
+     */
+    private String getMediaTypeString(final StubApiSetting stubApiSetting) {
         final var mediaType = stubConfig.isDownMode() ? stubApiSetting.getErrorMediaType() :
                 stubApiSetting.getSuccessMediaType();
 
+        return mediaType.toString();
+    }
+
+    /**
+     * ステータスコードを数値で取得する
+     *
+     * @param stubParam スタブパラメータ
+     * @return ステータスコードを数値
+     */
+    private Integer getRawStatusCode(final StubParam stubParam) {
         final var statusCode =
                 stubConfig.isDownMode() ? stubParam.getErrorCode() : stubParam.getSuccessCode();
 
-        exchange.getResponse().setRawStatusCode(statusCode.getValue());
-        exchange.getResponse()
-                .getHeaders()
-                .add(HttpHeaders.CONTENT_TYPE, mediaType.toString());
+        return statusCode.getValue();
     }
 }
