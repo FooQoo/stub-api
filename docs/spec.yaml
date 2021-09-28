@@ -1,0 +1,81 @@
+openapi: 3.0.1
+info:
+  title: Stub REST API
+  description: テスト用のスタブAPI
+  version: v1
+servers:
+- url: https://stub-api.com/
+  description: demo
+tags:
+- name: stub
+  description: Stub REST API
+paths:
+  /stub/api/v1/{api}/{successCode}/{errorCode}/*:
+    get:
+      tags:
+      - stub
+      summary: GETメソッドのスタブAPI
+      description: GETメソッドでスタブデータを取得する
+      operationId: getStubForGet
+      parameters:
+      - name: api
+        in: path
+        description: 取得するスタブデータのキーワード<br>・登録されたキーワード以外が入力された場合、400エラーになる<br>・スタブデータが存在しない場合、404エラーになる
+        required: true
+        schema:
+          type: string
+        example: sample-api
+      - name: successCode
+        in: path
+        description: 正常レスポンスのステータスコード<br>・整数以外の場合、400エラーになる<br>・スタブデータが存在しない場合、404エラーになる
+        required: true
+        schema:
+          type: string
+        example: 200
+      - name: errorCode
+        in: path
+        description: 異常レスポンスのステータスコード<br>・整数以外の場合、400エラーになる<br>・スタブデータが存在しない場合、404エラーになる
+        required: true
+        schema:
+          type: string
+        example: 500
+      responses:
+        "404":
+          description: Not Found
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/StubDtoErrorResponse'
+        "500":
+          description: Internal Server Error
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/StubDtoErrorResponse'
+        "400":
+          description: Bad Request
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/StubDtoErrorResponse'
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+components:
+  schemas:
+    StubDtoErrorResponse:
+      required:
+      - detail
+      - title
+      type: object
+      properties:
+        title:
+          type: string
+          description: ステータスコードのタイトル
+        detail:
+          type: string
+          description: エラー詳細
+      description: エラーレスポンス

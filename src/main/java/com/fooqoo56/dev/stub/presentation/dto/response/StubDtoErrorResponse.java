@@ -2,6 +2,7 @@ package com.fooqoo56.dev.stub.presentation.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serializable;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -14,13 +15,16 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode
 @Builder(access = AccessLevel.PRIVATE)
+@Schema(description = "エラーレスポンス")
 public class StubDtoErrorResponse implements Serializable {
 
     private static final long serialVersionUID = 3316176567352799499L;
 
+    @Schema(type = "string", required = true, description = "ステータスコードのタイトル")
     @JsonProperty
     private String title;
 
+    @Schema(type = "string", required = true, description = "エラー詳細")
     @JsonProperty
     private String detail;
 
