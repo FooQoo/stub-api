@@ -10,3 +10,9 @@ api:
     connect-timeout: 1000ms
     read-timeout: 1000ms
     max-in-memory-size: 16777216
+
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html

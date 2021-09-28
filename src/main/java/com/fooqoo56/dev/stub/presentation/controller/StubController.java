@@ -6,6 +6,9 @@ import com.fooqoo56.dev.stub.domain.constant.StubApiSetting;
 import com.fooqoo56.dev.stub.domain.model.StubBody;
 import com.fooqoo56.dev.stub.domain.model.StubParam;
 import com.fooqoo56.dev.stub.domain.service.ResponseConfigDomainService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -20,6 +23,7 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
+@Tag(name = "stub", description = "Stub REST API")
 public class StubController {
 
     private final StubService stubService;
@@ -37,11 +41,32 @@ public class StubController {
      * @param exchange    ServerWebExchange
      * @return JSON文字列
      */
+    @Operation(summary = "GETメソッドのスタブAPI",
+            description = "GETメソッドでスタブデータを取得する")
     @GetMapping(path = "{api}/{successCode}/{errorCode}/*")
-    public Mono<String> getStubForGet(@PathVariable("api") final String api,
-                                      @PathVariable("successCode") final String successCode,
-                                      @PathVariable("errorCode") final String errorCode,
-                                      final ServerWebExchange exchange
+    public Mono<String> getStubForGet(
+            @Parameter(
+                    required = true,
+                    description = "取得するスタブデータのキーワード<br>"
+                            + "・登録されたキーワード以外が入力された場合、400エラーになる<br>"
+                            + "・スタブデータが存在しない場合、404エラーになる",
+                    example = "sample-api")
+            @PathVariable("api") final String api,
+            @Parameter(
+                    required = true,
+                    description = "正常レスポンスのステータスコード<br>"
+                            + "・整数以外の場合、400エラーになる<br>"
+                            + "・スタブデータが存在しない場合、404エラーになる",
+                    example = "200")
+            @PathVariable("successCode") final String successCode,
+            @Parameter(
+                    required = true,
+                    description = "異常レスポンスのステータスコード<br>"
+                            + "・整数以外の場合、400エラーになる<br>"
+                            + "・スタブデータが存在しない場合、404エラーになる",
+                    example = "500")
+            @PathVariable("errorCode") final String errorCode,
+            final ServerWebExchange exchange
     ) {
         final var stubParam = StubParam.of(api, successCode, errorCode);
 
