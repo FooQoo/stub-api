@@ -31,12 +31,11 @@ public class RestExceptionHandler {
                                                                 final BadRequestException exception) {
         log.error(exception.getMessage());
         setContentType(exchange);
-        return Mono.just(new StubDtoErrorResponse("Bad Request.",
-                "[Stub Error]" + exception.getMessage()));
+        return Mono.just(StubDtoErrorResponse.getBadRequest(exception.getMessage()));
     }
 
     /**
-     * その他のエラー
+     * 404
      *
      * @param exception NotFoundException
      * @return エラーレスポンス
@@ -49,8 +48,7 @@ public class RestExceptionHandler {
         log.error(exception.getMessage());
         setContentType(exchange);
         return Mono
-                .just(new StubDtoErrorResponse("Not Found.",
-                        "[Stub Error]" + exception.getMessage()));
+                .just(StubDtoErrorResponse.getNotFound(exception.getMessage()));
     }
 
     /**
@@ -67,8 +65,7 @@ public class RestExceptionHandler {
         log.error(exception.getMessage());
         setContentType(exchange);
         return Mono
-                .just(new StubDtoErrorResponse("Internal Server error.",
-                        "[Stub Error]" + exception.getMessage()));
+                .just(StubDtoErrorResponse.getInternalServerError());
     }
 
     /**

@@ -2,11 +2,13 @@ package com.fooqoo56.dev.stub.presentation.controller;
 
 import com.fooqoo56.dev.stub.application.service.StubService;
 import com.fooqoo56.dev.stub.config.StubConfig;
+import com.fooqoo56.dev.stub.domain.constant.StubApiSetting;
 import com.fooqoo56.dev.stub.domain.model.StubBody;
 import com.fooqoo56.dev.stub.domain.model.StubParam;
 import com.fooqoo56.dev.stub.domain.service.ResponseConfigDomainService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,8 +50,26 @@ public class StubController {
                         stubService.getStubBody(stubParam,
                                 stubConfig.isDownMode());
 
-        responseConfigDomainService.setResponse(stubParam, exchange);
+        setResponse(stubParam, exchange);
 
         return stubData.map(StubBody::toString);
+    }
+
+    /**
+     * Response情報をセットする
+     *
+     * @param stubParam スタブのパラメータ
+     * @param exchange  ServerWebExchange
+     */
+    private void setResponse(final StubParam stubParam, final ServerWebExchange exchange) {
+        final var stubApiSetting = StubApiSetting.getStubApiSetting(stubParam.getApi().toString());
+
+        exchange.getResponse()
+                .setRawStatusCode(responseConfigDomainService.getRawStatusCode(stubParam));
+
+        exchange.getResponse()
+                .getHeaders()
+                .add(HttpHeaders.CONTENT_TYPE,
+                        responseConfigDomainService.getMediaTypeString(stubApiSetting));
     }
 }

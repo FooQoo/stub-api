@@ -34,13 +34,15 @@ public class ExceptionHandler implements WebExceptionHandler {
     public Mono<Void> handle(@NotNull final ServerWebExchange exchange,
                              @NotNull final Throwable exception) {
 
-        final var errorResponse = getErrorResponse(exchange, exception);
+        final var errorResponse = getErrorResponse(exception);
+
+        exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_PROBLEM_JSON);
 
         try {
             final DataBuffer db = new DefaultDataBufferFactory()
                     .wrap(objectMapper.writeValueAsBytes(errorResponse.getValue()));
+
             exchange.getResponse().setStatusCode(errorResponse.getKey());
-            exchange.getResponse().getHeaders().setContentType(MediaType.APPLICATION_PROBLEM_JSON);
             log.error("{} {}", exception.getMessage(), exception.getStackTrace());
             return exchange.getResponse().writeWith(Mono.just(db));
         } catch (final JsonProcessingException jsonProcessingException) {
@@ -54,29 +56,22 @@ public class ExceptionHandler implements WebExceptionHandler {
     /**
      * エラーレスポンス取得
      *
-     * @param exchange  ServerWebExchange
      * @param exception 例外
      * @return エラーレスポンスのPair
      */
     @NonNull
-    private Pair<HttpStatus, StubDtoErrorResponse> getErrorResponse(
-            final ServerWebExchange exchange, final Throwable exception) {
+    private static Pair<HttpStatus, StubDtoErrorResponse> getErrorResponse(
+            final Throwable exception) {
 
         if (exception instanceof MethodNotAllowedException) {
-            return Pair.of(HttpStatus.METHOD_NOT_ALLOWED,
-                    new StubDtoErrorResponse(
-                            "Method Not Allowed.",
-                            "[Stub Error]許可されないメソッドでアクセスされました"));
+            return Pair
+                    .of(HttpStatus.METHOD_NOT_ALLOWED, StubDtoErrorResponse.getMethodNotAllowed());
         } else if (exception instanceof ResponseStatusException) {
             return Pair.of(HttpStatus.NOT_FOUND,
-                    new StubDtoErrorResponse(
-                            "Not Found.",
-                            "[Stub Error]存在しないパスにアクセスされました"));
+                    StubDtoErrorResponse.getNotFound("存在しないパスにアクセスされました"));
         } else {
             return Pair.of(HttpStatus.INTERNAL_SERVER_ERROR,
-                    new StubDtoErrorResponse(
-                            "Internal Server Error.",
-                            "[Stub Error]想定外のエラーが発生しました"));
+                    StubDtoErrorResponse.getInternalServerError());
         }
     }
 }
