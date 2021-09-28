@@ -143,6 +143,6 @@ class RestExceptionHandlerE2ESpec extends Specification {
         where:
         caseName                   | exception
         "IllegalArgumentException" | new IllegalArgumentException()
-        "FailedSleepException"     | new FailedSleepException("message")
+        "FailedSleepException"     | new FailedSleepException("message", new InterruptedException())
     }
 }
