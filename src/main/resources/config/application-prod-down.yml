@@ -1,0 +1,12 @@
+---
+stub:
+  enable:
+    down: true
+    timeout: false
+
+api:
+  stub-data:
+    base-url: /stub/data
+    connect-timeout: 1000ms
+    read-timeout: 1000ms
+    max-in-memory-size: 16777216

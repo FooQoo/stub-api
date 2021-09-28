@@ -1,0 +1,23 @@
+spring:
+  mvc:
+    throw-exception-if-no-handler-found: true
+  webflux:
+    static-path-pattern: /stub/data/**
+
+server:
+  max-http-header-size: 8KB
+  compression:
+    enabled: true
+    min-response-size: 2048
+
+stub:
+  enable:
+    down: false
+    timeout: false
+
+api:
+  stub-data:
+    base-url: http://localhost:8080/stub/data/json
+    connect-timeout: 1000ms
+    read-timeout: 1000ms
+    max-in-memory-size: 16777216
