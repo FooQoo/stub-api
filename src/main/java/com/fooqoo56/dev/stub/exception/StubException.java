@@ -7,4 +7,8 @@ public abstract class StubException extends RuntimeException {
     public StubException(final String message) {
         super(message);
     }
+
+    public StubException(final String message, final Throwable exception) {
+        super(message, exception);
+    }
 }
